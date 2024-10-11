@@ -119,4 +119,69 @@ O Jaeger suporta vários protocolos, incluindo o OpenTracing, que é um padrão 
 
 Ao fornecer informações detalhadas sobre o fluxo de solicitações em um aplicativo distribuído, o Jaeger permite que os desenvolvedores identifiquem rapidamente problemas de desempenho e depurem problemas em um ambiente de produção. Isso ajuda a melhorar a experiência do usuário e reduzir o tempo de inatividade do aplicativo.
 
+## Projeto Election-Management
+
+```mermaid
+sequenceDiagram
+    par GET
+        actor Ator
+        participant ElectionController
+        participant ElectionService
+        participant CandidateService
+        participant ElectionRepositorySql
+        participant ElectionRepositoryRedis
+        Ator ->>+ ElectionController: GET
+        ElectionController ->>+ ElectionService: findAll()
+        ElectionService ->>+ ElectionRepositorySql: findAll()
+        ElectionRepositorySql ->>- ElectionService: List<Election>
+        ElectionService ->>- ElectionController: List<Election>
+        ElectionController ->>- Ator: List<ElectionResponseDto>
+    end
+    par POST
+        Ator ->> ElectionController: POST
+        ElectionController ->> ElectionService: criarEleicao()
+        ElectionService ->>+ CandidateService: findAll()
+        CandidateService ->>- ElectionService: List<Candidate>
+        ElectionService ->> ElectionRepositorySql: save(Election)
+        ElectionService ->> ElectionRepositoryRedis: save(Election)
+    end
+```
+
+```mermaid
+sequenceDiagram
+    par EVENT
+        actor ReactiveRedisDataSource
+        ReactiveRedisDataSource ->> ElectionService: sync(id)
+        ElectionService ->> ElectionRepositorySql: save(Election)
+    end
+```
+
+```mermaid
+sequenceDiagram
+    par GET
+        actor Ator
+        participant CandidateController
+        participant CandidateService
+        participant CandidateRepository
+        Ator ->>+ CandidateController: GET
+        CandidateController ->>+ CandidateService: findAll()
+        CandidateService ->>+ CandidateRepository: findAll()
+        CandidateRepository ->>- CandidateService: List<Candidate>
+        CandidateService ->>- CandidateController: List<Candidate>
+        CandidateController ->>- Ator: List<CandidateResponseDto>
+    end
+    par POST
+        Ator ->> CandidateController: POST(CandidateRequestDto)
+        CandidateController ->> CandidateService: salvarCandidato(Candidate)
+        CandidateService ->> CandidateRepository: save(Candidate)
+    end
+    par PUT
+        Ator ->>+ CandidateController: PUT(CandidateRequestDto)
+        CandidateController ->>+ CandidateService: AtualizarCandidato(Candidate)
+        CandidateService ->>+ CandidateRepository: save(Candidate)
+        CandidateRepository ->>- CandidateService: Candidate
+        CandidateService ->>- CandidateController: Candidate
+        CandidateController ->>- Ator: CandidateResponseDto
+    end
+```
 
