@@ -139,7 +139,7 @@ sequenceDiagram
     end
     par POST
         Ator ->> ElectionController: POST
-        ElectionController ->> ElectionService: criarEleicao()
+        ElectionController ->> ElectionService: createElection()
         ElectionService ->>+ CandidateService: findAll()
         CandidateService ->>- ElectionService: List<Candidate>
         ElectionService ->> ElectionRepositorySql: save(Election)
@@ -172,12 +172,12 @@ sequenceDiagram
     end
     par POST
         Ator ->> CandidateController: POST(CandidateRequestDto)
-        CandidateController ->> CandidateService: salvarCandidato(Candidate)
+        CandidateController ->> CandidateService: save(Candidate)
         CandidateService ->> CandidateRepository: save(Candidate)
     end
     par PUT
         Ator ->>+ CandidateController: PUT(CandidateRequestDto)
-        CandidateController ->>+ CandidateService: AtualizarCandidato(Candidate)
+        CandidateController ->>+ CandidateService: update(Candidate)
         CandidateService ->>+ CandidateRepository: save(Candidate)
         CandidateRepository ->>- CandidateService: Candidate
         CandidateService ->>- CandidateController: Candidate
