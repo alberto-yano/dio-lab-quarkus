@@ -177,7 +177,7 @@ sequenceDiagram
     end
     par PUT
         Ator ->>+ CandidateController: PUT(CandidateRequestDto)
-        CandidateController ->>+ CandidateService: update(Candidate)
+        CandidateController ->>+ CandidateService: save(Candidate)
         CandidateService ->>+ CandidateRepository: save(Candidate)
         CandidateRepository ->>- CandidateService: Candidate
         CandidateService ->>- CandidateController: Candidate
