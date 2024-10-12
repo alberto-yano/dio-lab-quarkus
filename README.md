@@ -4,7 +4,7 @@
 
 Esse projeto é um exercício da aula da **DIO "Desenvolvendo um Sistema para Eleçãao Usando Quarkus-Framework"** onde o código fonte do projeto original se encontra neste [link]([https://github.com/digitalinnovationone/lab-padroes-projeto-spring](https://github.com/thpoiani/lab-quarkus)).
 
-O projeto original foi feito em março de 2023, com Quarkus 2.16.4.Final e JDK 17. Farei utilizando a mesma ideia do projeto, porém atualizando para o Quarkus 3.8 LTS e Java21, além de realizar algumas modificações na arquitetura.
+O projeto original foi feito em março de 2023, com Quarkus 2.16.4.Final e JDK 17. Farei utilizando a mesma ideia do projeto, porém atualizando para o Quarkus 3.15 LTS e Java21, além de realizar algumas modificações na arquitetura.
 
 ## Escopo
 
