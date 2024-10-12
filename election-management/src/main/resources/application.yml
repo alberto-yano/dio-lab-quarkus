@@ -1,0 +1,47 @@
+quarkus:
+  application:
+    name: election-management
+  datasource:
+    db-kind: mariadb
+    devservices:
+      image-name: mariadb:11.2
+  hibernate-orm:
+    database:
+      generation: none
+  flyway:
+    migrate-at-start: true
+  shutdown:
+    timeout: 5s
+
+"%dev":
+  quarkus:
+    otel:
+      enabled: false
+    hibernate-orm:
+      log:
+        bind-parameters: true
+        sql: true
+
+"%prod":
+  quarkus:
+    datasource:
+      jdbc:
+        telemetry: true
+    log:
+      handler:
+        gelf:
+          enabled: true
+          additional-field:
+            - "app": ${quarkus.application.name}
+          include-full-mdc: true
+      console:
+        format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+    otel:
+      enabled: true
+
+"%test":
+  quarkus:
+    hibernate-orm:
+      log:
+        bind-parameters: true
+        sql: true

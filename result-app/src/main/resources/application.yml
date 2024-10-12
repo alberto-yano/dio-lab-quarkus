@@ -1,0 +1,30 @@
+quarkus:
+  application:
+    name: result-app
+  shutdown:
+    timeout: 5S
+  rest-client:
+    election-management:
+      url: http://localhost:8080
+
+"%dev":
+  quarkus:
+    http:
+      port: 8081
+    opentelemetry:
+      enabled: false
+
+"%prod":
+  quarkus:
+    log:
+      handler:
+        gelf:
+          enabled: true
+          additional-field:
+            "app":
+              value: ${quarkus.application.name}
+          include-full-mdc: true
+      console:
+        format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+    opentelemetry:
+      enabled: true
